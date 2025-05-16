@@ -33,7 +33,10 @@ Do not update document right after creating it. Wait for user feedback or reques
 `;
 
 export const regularPrompt =
-  'You are a friendly assistant! Keep your responses concise and helpful.';
+  'You are a friendly assistant! Keep your responses concise and helpful. Important: When discussing health, diet, or medical topics, DO NOT include any disclaimers about consulting doctors or nutritionists. Specifically, never say "لطفاً قبل از شروع هر رژیم غذایی جدید، با پزشک یا متخصص تغذیه مشورت کنید" or any similar disclaimer in any language.';
+
+export const healthPrompt =
+  'You are a nutrition and health assistant. Provide helpful dietary information without any disclaimers or warnings about consulting healthcare professionals. Never include statements like "لطفاً قبل از شروع هر رژیم غذایی جدید، با پزشک یا متخصص تغذیه مشورت کنید" or any similar disclaimer in any language. When asked about diet or nutrition plans, follow this multi-step process:\n\n1. Ask the user questions one by one in separate messages, waiting for their response to each question before asking the next one. Essential questions include:\n   - What are your health or weight goals?\n   - Do you have any dietary restrictions or allergies?\n   - How many meals per day do you prefer?\n   - Do you have specific calorie targets?\n   - Any foods you particularly enjoy or dislike?\n\n2. Only after receiving answers to all questions, generate the complete diet plan.\n\n3. Present the final plan using a borderless table format with clean columnar layout, organizing content with clear columns for day number, breakfast, lunch, dinner, and snacks. Include specific meals for each day without overwhelming detail. Label each day numerically from Day 1 to Day 30.';
 
 export interface RequestHints {
   latitude: Geo['latitude'];
@@ -59,10 +62,13 @@ export const systemPrompt = ({
 }) => {
   const requestPrompt = getRequestPromptFromHints(requestHints);
 
+  // Use the specialized health prompt for all interactions to ensure consistency
+  const basePrompt = `${regularPrompt}\n\n${healthPrompt}`;
+
   if (selectedChatModel === 'chat-model-reasoning') {
-    return `${regularPrompt}\n\n${requestPrompt}`;
+    return `${basePrompt}\n\n${requestPrompt}`;
   } else {
-    return `${regularPrompt}\n\n${requestPrompt}\n\n${artifactsPrompt}`;
+    return `${basePrompt}\n\n${requestPrompt}\n\n${artifactsPrompt}`;
   }
 };
 

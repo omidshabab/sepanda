@@ -52,6 +52,7 @@ export function MessageEditor({
         className="bg-transparent outline-none overflow-hidden resize-none !text-base rounded-xl w-full"
         value={draftContent}
         onChange={handleInput}
+        dir="auto"
       />
 
       <div className="flex flex-row gap-2 justify-end">

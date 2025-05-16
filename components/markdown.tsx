@@ -8,6 +8,31 @@ const components: Partial<Components> = {
   // @ts-expect-error
   code: CodeBlock,
   pre: ({ children }) => <>{children}</>,
+  // Table components with border styling
+  table: ({ node, children, ...props }) => {
+    return (
+      <div className="overflow-x-auto my-4">
+        <table className="w-full border-collapse border border-border" {...props}>
+          {children}
+        </table>
+      </div>
+    );
+  },
+  thead: ({ node, children, ...props }) => {
+    return <thead className="bg-muted" {...props}>{children}</thead>;
+  },
+  tbody: ({ node, children, ...props }) => {
+    return <tbody {...props}>{children}</tbody>;
+  },
+  tr: ({ node, children, ...props }) => {
+    return <tr className="border-b border-border" {...props}>{children}</tr>;
+  },
+  th: ({ node, children, ...props }) => {
+    return <th className="border border-border px-4 py-2 text-start font-semibold" {...props}>{children}</th>;
+  },
+  td: ({ node, children, ...props }) => {
+    return <td className="border border-border px-4 py-2" {...props}>{children}</td>;
+  },
   ol: ({ node, children, ...props }) => {
     return (
       <ol className="list-decimal list-outside ml-4" {...props}>
@@ -91,15 +116,25 @@ const components: Partial<Components> = {
       </h6>
     );
   },
+  // Adding wrapper for paragraph with dir="auto" to handle RTL text
+  p: ({ node, children, ...props }) => {
+    return (
+      <p dir="auto" {...props}>
+        {children}
+      </p>
+    );
+  },
 };
 
 const remarkPlugins = [remarkGfm];
 
 const NonMemoizedMarkdown = ({ children }: { children: string }) => {
   return (
-    <ReactMarkdown remarkPlugins={remarkPlugins} components={components}>
-      {children}
-    </ReactMarkdown>
+    <div dir="auto">
+      <ReactMarkdown remarkPlugins={remarkPlugins} components={components}>
+        {children}
+      </ReactMarkdown>
+    </div>
   );
 };
 

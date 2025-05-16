@@ -275,6 +275,7 @@ function PureMultimodalInput({
         )}
         rows={2}
         autoFocus
+        dir="auto"
         onKeyDown={(event) => {
           if (
             event.key === 'Enter' &&

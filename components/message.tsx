@@ -68,7 +68,7 @@ const PurePreviewMessage = ({
           )}
 
           <div
-            className={cn('flex flex-col gap-4 w-full', {
+            className={cn('flex flex-col gap-4 w-full items-start', {
               'min-h-96': message.role === 'assistant' && requiresScrollPadding,
             })}
           >
@@ -104,7 +104,7 @@ const PurePreviewMessage = ({
               if (type === 'text') {
                 if (mode === 'view') {
                   return (
-                    <div key={key} className="flex flex-row gap-2 items-start">
+                    <div key={key} className="flex flex-row gap-2 items-start leading-[2rem]">
                       {message.role === 'user' && !isReadonly && (
                         <Tooltip>
                           <TooltipTrigger asChild>
@@ -126,9 +126,10 @@ const PurePreviewMessage = ({
                       <div
                         data-testid="message-content"
                         className={cn('flex flex-col gap-4', {
-                          'bg-primary text-primary-foreground px-3 py-2 rounded-xl':
+                          'bg-primary/5 text-zinc-600 font-medium leading-[2rem] px-3 py-2 rounded-xl':
                             message.role === 'user',
                         })}
+                        dir="auto"
                       >
                         <Markdown>{sanitizeText(part.text)}</Markdown>
                       </div>
